@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% block title %}Books I have{% endblock %}
+{% load static %}
+{% block nav %}
+<link rel="stylesheet" href="{% static 'stylesheets/library/custom_style.css' %}">
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Books I have in my shelf.</h1>
+    <p class="lead">{{ quote }}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Serial</th>
+        <th scope="col">Title</th>
+        <th scope="col">Author</th>
+        <th scope="col">Edition</th>
+         <th scope="col">Type</th>
+          <th scope="col">Reading Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+
+
+      {% for book in books %}
+      <tr>
+        <th scope="row">{{ forloop.counter0|add:books.start_index }}</th>
+        <td>{{ book.title }}</td>
+        <td>{{ book.author }}</td>
+        <td>{{ book.edition }}</td>
+          <td>{{ book.type }}</td>
+          <td>
+              <form style="padding: 0; margin:0;" action="
+                    {% url 'books:change_book_status' id=book.id %}" method="POST">
+                  {% csrf_token %}
+                  <label>
+                      <select class="form-control form-control-sm" name="status">
+                      <option disabled selected>{{ book.status }}</option>
+                      <option value="Reading">Reading</option>
+                      <option value="Stopped">Stopped</option>
+                      <option value="Completed">Completed</option>
+                      </select>
+                  </label>
+                  <input style="border-style: none" type="submit" value="🖊️">
+              </form>
+
+          </td>
+
+
+          <td>
+         <a class="" title="Delete" href="{% url "library:delete_book" book.id %}">🗑️</a>
+
+          </td>
+      </tr>
+        {% endfor %}
+
+    </tbody>
+  </table>
+</div>
+    <div>
+<p style="float:right; color: #ea3a60;">Total {{ total }} book{{ total|pluralize }}</p>
+</div>
+{#{% include 'blog/pagination.html' with page=books %}<br>#}
+{% if posts.has_previous %}
+        <a class="btn btn-primary float-left"  href="?page={{ posts.previous_page_number }}">Latest Posts</a>
+        {% endif %}
+    {% if posts.has_next %}
+    <a class="btn btn-primary float-right" href="?page={{ posts.next_page_number }}">Older Posts</a>
+    {% endif %}
+</span>
+
+
+{% if request.user.is_authenticated %}
+<form method="post">
+  {% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <input required type="text" name="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="col">
+      <input type="text" required name="author" class="form-control" placeholder="Author">
+    </div>
+    <div class="col">
+      <input type="text" name="edition" class="form-control" placeholder="Edition (optional)">
+    </div>
+    <div class="col">
+        <select class="form-control form-control" name="book_type">
+				<option value="Hard Copy" selected>Hard copy</option>
+				<option value="Soft Copy" >Soft copy</option>
+			</select>
+    </div>
+    <div class="col">
+      <button type="submit" class="btn btn-secondary">Add New Book</button>
+    </div>
+  </div>
+  <br>
+    </form>
+{% endif %}
+
+    {% if messages %}
+  {% for message in messages %}
+  <div class="container">
+    <div class="alert alert-success" role="alert">
+      {{ message }}
+    </div>
+  </div>
+        {% endfor %}
+{% endif %}
+
+{% endblock %}

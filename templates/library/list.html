@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Books I read{% endblock %}
+
+{% block nav %}
+<link rel="stylesheet" href="{% static 'stylesheets/library/custom_style.css' %}">
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Books I read.</h1>
+    <p class="lead">{{ quote }}</p>
+  </div>
+</div>
+  {% endblock %}
+
+{% block content %}
+
+<div class="table-responsive">
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Serial</th>
+      <th scope="col">Title</th>
+      <th scope="col">Author</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for book in books %}
+    <tr>
+      <th scope="row">{{ forloop.counter }}</th>
+      <td>{{ book.title }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.rating }}</td>
+      <td>
+              <form style="padding: 0; margin:0;" action="
+                    {% url 'books:change_book_status' id=book.id %}" method="POST">
+                  {% csrf_token %}
+                  <label>
+                      <select class="form-control form-control-sm" name="status">
+                      <option disabled selected>{{ book.status }}</option>
+                      <option value="Reading">Reading</option>
+                      <option value="Stopped">Stopped</option>
+                      <option value="Completed">Completed</option>
+                      </select>
+                  </label>
+                  <input style="border-style: none" type="submit" value="🖊️">
+              </form>
+          </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+{% endblock %}

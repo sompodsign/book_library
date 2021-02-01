@@ -1,0 +1,51 @@
+{% extends "account/account_base.html" %}
+
+{% load static %}
+{% block title %}Login{% endblock %}
+
+
+{% block content %}
+
+    <div class="container">
+  <div class="card card-container">
+
+  {% if messages %}
+  {% for message in messages %}
+<div {% if message.tags == 'success' %}class="alert alert-success"
+     {% else %} class = "alert alert-warning"
+     {% endif %} role="alert">
+{{ message }}
+</div>
+  {% endfor %}
+  {% endif %}
+
+  {% if 'next' in request.GET %}
+
+  <div class="alert alert-info">You need to login the to view the page.</div>
+
+  {% endif %}
+
+      <img id="profile-img" class="profile-img-card" src="{% static 'img/login.png' %}" />
+      <p id="profile-name" class="profile-name-card"></p>
+      <form class="form-signin" method="post">
+          {%  csrf_token %}
+          <span id="reauth-email" class="reauth-email"></span>
+          <input type="text" name="username" id="inputEmail" class="form-control" placeholder="Email or username" required autofocus>
+          <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <div id="remember" class="checkbox">
+              <label>
+                  <input type="checkbox" name="remember" value="remember-me"> Remember me
+              </label>
+          </div>
+          <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Sign in</button>
+      </form><!-- /form -->
+      <a href="{% url 'password_reset' %}" class="forgot-password">
+          Forgot the password?
+      </a>
+      <a href="{% url 'account:register' %}" class="signup">
+          Sign up
+      </a>
+  </div><!-- /card-container -->
+</div><!-- /container -->
+
+{% endblock %}
