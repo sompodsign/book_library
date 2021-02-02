@@ -23,7 +23,7 @@
         <div class="hero-header-11-content">
 
           <nav class="navbar navbar-expand-xl navbar-light py-sm-2 py-1 px-0">
-            <a class="navbar-brand editContent" href="">Welcome</a>
+            <a class="navbar-brand editContent" href="">BOOK LOVE</a>
             <!-- if logo is image enable this
 				<a class="navbar-brand" href="#index.html">
 						<img src="image-path" alt="Your logo" title="Your logo" style="height:35px;" />
@@ -36,37 +36,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item {% if request.path == '/' %}active{% endif %}">
-                  <a class="nav-link" href="">Reading Cafe<span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url "books:book_list" %}">Reading Cafe<span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item dropdown">
-                </li>
-
-                <li class="nav-item">
-                <li class="nav-item dropdown">
-                  <a class="nav-link  {% if '/books' in request.path or request.path == '/movie/library/' %}active
-                    {% endif %} dropdown-toggle" href="#" data-toggle="dropdown"> Library </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="{% url 'library:book_list' %}">READING</a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="{% url 'library:book_library' %}">BOOK SHELF</a>
-                    </li>
-                  </ul>
-                </li>
+              <li class="nav-item  {% if request.path == '/library/' %}active{% endif %}">
+                  <a class="nav-link" href="{% url "books:book_library" %}">Book Shelf<span class="sr-only">(current)</span></a>
                 </li>
 
-
-                {# <li class="nav-item {% if request.path == '/books/' %}active{% endif %}">#}
-                  {# <a class="nav-link" href="{% url 'library:book_list' %} ">Reading</a>#}
-                  {# </li>#}
-                {# <li class="nav-item {% if request.path == '/books/library/' %}active{% endif %}">#}
-                  {# <a class="nav-link" href="{% url 'library:book_library' %}">Book shelf</a>#}
-                  {# </li>#}
-
-                {# <li class="nav-item {% if request.path == '/movie/library/' %}active{% endif %}">#}
-                  {# <a class="nav-link" href="{% url 'movie:movie_library' %}">Watchlist</a>#}
-                  {# </li>#}
                 {% if not request.user.is_authenticated %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'account:login' %}">Login</a>
@@ -75,9 +50,7 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Hi, {{ request.user.first_name }}</a>
                   <ul class="dropdown-menu">
-{#                       <li class="nav-item">#}
-{#                  <a class="nav-link" href="{% url 'account:account' %}">My account</a>#}
-{#                </li>#}
+
                     <li class="nav-item">
                   <a class="nav-link" href="{% url 'account:logout' %}">Logout</a>
                 </li>
@@ -85,17 +58,6 @@
                 </li>
                 </li>
                 {% endif %}
-
-
-{#              {% if request.user.is_authenticated %}#}
-{#                <li>#}
-{#                    <a class="dropdown-toggle nav-link" data-toggle="dropdown"href="#">#}
-{#                        Hi, {{ request.user.first_name }}</a>#}
-{#                </li>#}
-{#              {% endif %}#}
-
-
-
             </div>
           </nav>
         </div>
